@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="vahid abbasi" id="2">
+        <insert tableName="routes_info">
+            <column name="route_id" valueNumeric="1"/>
+            <column name="origin" value="FRA"/>
+            <column name="destination" value="JFK"/>
+            <column name="flight_num" value="LH0001"/>
+            <column name="flight_date" valueDate="2022-06-01"/>
+            <column name="num_of_transits" valueNumeric="0"/>
+            <column name="price" valueNumeric="333"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vahid abbasi" id="3">
+        <insert tableName="routes_info">
+            <column name="route_id" valueNumeric="2"/>
+            <column name="origin" value="FRA"/>
+            <column name="destination" value="JFK"/>
+            <column name="flight_num" value="LH0002"/>
+            <column name="flight_date" valueDate="2022-06-01"/>
+            <column name="num_of_transits" valueNumeric="1"/>
+            <column name="price" valueNumeric="222"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vahid abbasi" id="4">
+        <insert tableName="routes_info">
+            <column name="route_id" valueNumeric="3"/>
+            <column name="origin" value="FRA"/>
+            <column name="destination" value="JFK"/>
+            <column name="flight_num" value="LH0003"/>
+            <column name="flight_date" valueDate="2022-06-01"/>
+            <column name="num_of_transits" valueNumeric="2"/>
+            <column name="price" valueNumeric="111"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vahid abbasi" id="5">
+        <insert tableName="routes_info">
+            <column name="route_id" valueNumeric="4"/>
+            <column name="origin" value="FRA"/>
+            <column name="destination" value="JFK"/>
+            <column name="flight_num" value="LH0004"/>
+            <column name="flight_date" valueDate="2022-06-03"/>
+            <column name="num_of_transits" valueNumeric="0"/>
+            <column name="price" valueNumeric="333"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

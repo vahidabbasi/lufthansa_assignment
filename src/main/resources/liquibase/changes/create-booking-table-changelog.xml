@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="vahid abbasi" id="6">
+        <createTable tableName="booking_info">
+            <column name="booking_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="route_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="booking_info"/>
+        </rollback>
+    </changeSet>
+    <changeSet author="vahid abbasi" id="7">
+        <addForeignKeyConstraint baseColumnNames="route_id"
+                                 baseTableName="booking_info"
+                                 constraintName="fk_route_id"
+                                 referencedColumnNames="route_id"
+                                 referencedTableName="routes_info"/>
+    </changeSet>
+</databaseChangeLog>
