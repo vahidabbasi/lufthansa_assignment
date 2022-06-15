@@ -34,24 +34,28 @@ public class BookingFlightsRequestTest extends AbstractValidatorTest{
     @Test
     public void shouldValidateInvalidFlightDate() {
         bookingFlightsRequest.setFlightDate(null);
+
         assertFalse(isRequestValid(bookingFlightsRequest));
     }
 
     @Test
     public void shouldValidateNumOfTransits() {
         bookingFlightsRequest.setNumOfTransits(INVALID_NUM_OF_TRANSITS);
+
         assertFalse(isRequestValid(bookingFlightsRequest));
     }
 
     @Test
     public void shouldValidateMinPrice() {
         bookingFlightsRequest.setMinPrice(INVALID_PRICE);
+
         assertFalse(isRequestValid(bookingFlightsRequest));
     }
 
     @Test
     public void shouldValidateMaxPrice() {
         bookingFlightsRequest.setMaxPrice(INVALID_PRICE);
+
         assertFalse(isRequestValid(bookingFlightsRequest));
     }
 

@@ -1,9 +1,8 @@
 package com.lufthansa.bookingflights.service;
 
-import com.lufthansa.bookingflights.exceptions.BookingFlightsException;
+import com.lufthansa.bookingflights.exceptions.BookingIdGenerationException;
 import com.lufthansa.bookingflights.model.BookingFlightInfo;
 import com.lufthansa.bookingflights.model.BookingInfo;
-import com.lufthansa.bookingflights.model.response.BookingFlightsResponse;
 import com.lufthansa.bookingflights.repository.BookingFlightsDAO;
 import com.lufthansa.bookingflights.validators.RequestValidator;
 import org.junit.Test;
@@ -33,8 +32,7 @@ public class BookingFlightsServiceTest  {
     private BookingFlightsService bookingFlightsService;
 
     @Test
-    public void shouldBookFlight() {
-
+    public void shouldBookFlightWhenClientProvideBookingId() {
         doNothing().when(requestValidator).validatePrice(anyDouble(), anyDouble());
         when(bookingFlightsDAO.getFlightInfo(anyString(), anyString(), any(), anyInt(),anyDouble(), anyDouble()))
                 .thenReturn(Optional.of(FLIGHT_INFO));
@@ -79,5 +77,35 @@ public class BookingFlightsServiceTest  {
         verifyNoMoreInteractions(bookingFlightsDAO);
 
         assertEquals(BOOKING_INFO, actualResponse.get());
+    }
+
+    @Test
+    public void shouldBookFlight() {
+        doNothing().when(requestValidator).validatePrice(anyDouble(), anyDouble());
+        when(bookingFlightsDAO.getFlightInfo(anyString(), anyString(), any(), anyInt(),anyDouble(), anyDouble()))
+                .thenReturn(Optional.of(FLIGHT_INFO));
+        when(bookingFlightsDAO.isBookingIdExist(anyString())).thenReturn(0);
+
+        BookingFlightInfo actualResponse = bookingFlightsService.bookFlight(ORIGIN, DESTINATION, FLIGHT_DATE,
+                NUM_OF_TRANSITS, MIN_PRICE, MAX_PRICE);
+
+        verify(bookingFlightsDAO).getFlightInfo(ORIGIN, DESTINATION, FLIGHT_DATE,NUM_OF_TRANSITS, MIN_PRICE, MAX_PRICE);
+        verify(bookingFlightsDAO).bookFlight(anyString(), eq(FLIGHT_INFO.getRouteId()), eq(FLIGHT_STATUS_BOOKED));
+        verify(bookingFlightsDAO).isBookingIdExist(anyString());
+        verifyNoMoreInteractions(bookingFlightsDAO);
+
+        actualResponse.setBookingId(BOOKING_ID);
+        assertEquals(BOOKING_FLIGHT_INFO, actualResponse);
+    }
+
+    @Test(expected = BookingIdGenerationException.class)
+    public void shouldBookFlightThrowException() {
+        doNothing().when(requestValidator).validatePrice(anyDouble(), anyDouble());
+        when(bookingFlightsDAO.getFlightInfo(anyString(), anyString(), any(), anyInt(),anyDouble(), anyDouble()))
+                .thenReturn(Optional.of(FLIGHT_INFO));
+        when(bookingFlightsDAO.isBookingIdExist(anyString())).thenReturn(1);
+
+        bookingFlightsService.bookFlight(ORIGIN, DESTINATION, FLIGHT_DATE,
+                NUM_OF_TRANSITS, MIN_PRICE, MAX_PRICE);
     }
 }

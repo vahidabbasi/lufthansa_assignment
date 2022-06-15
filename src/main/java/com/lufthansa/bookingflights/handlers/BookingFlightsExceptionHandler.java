@@ -1,6 +1,7 @@
 package com.lufthansa.bookingflights.handlers;
 
 import com.lufthansa.bookingflights.exceptions.BookingFlightsException;
+import com.lufthansa.bookingflights.exceptions.BookingIdGenerationException;
 import com.lufthansa.bookingflights.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class BookingFlightsExceptionHandler {
     public ResponseEntity handleBookingFlightsException(BookingFlightsException exception) {
         log.error("bookingFlightsException: {}", exception.getMessage());
         return createError(exception.getHttpStatus(), exception.getDisplayMessage());
+    }
+
+    @ExceptionHandler(BookingIdGenerationException.class)
+    public ResponseEntity handleBookingIdGenerationException(final BookingIdGenerationException exception) {
+        log.info("ReferenceGenerationException: {}", exception.getMessage());
+        return internalServerError(exception.getDisplayMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

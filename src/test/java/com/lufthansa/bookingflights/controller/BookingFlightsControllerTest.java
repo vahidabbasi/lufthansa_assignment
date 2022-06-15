@@ -96,4 +96,22 @@ public class BookingFlightsControllerTest {
             assertEquals(BOOKED_FLIGHT_NOT_FOUND_ERROR_MESSAGE, e.getMessage());
         }
     }
+
+    @Test
+    public void shouldBookFlight() {
+
+        when(bookingFlightsService.bookFlight(anyString(), anyString(), any(), anyInt(),
+                anyDouble(), anyDouble())).thenReturn(BOOKING_FLIGHT_INFO);
+
+        ResponseEntity<BookingFlightsResponse> actualResponse = bookingFlightsController.bookFlight(BOOKING_FLIGHTS_REQUEST);
+
+        verify(bookingFlightsService).bookFlight(BOOKING_FLIGHTS_REQUEST.getOrigin(),
+                BOOKING_FLIGHTS_REQUEST.getDestination(), BOOKING_FLIGHTS_REQUEST.getFlightDate(),
+                BOOKING_FLIGHTS_REQUEST.getNumOfTransits(), BOOKING_FLIGHTS_REQUEST.getMinPrice(),
+                BOOKING_FLIGHTS_REQUEST. getMaxPrice());
+        verifyNoMoreInteractions(bookingFlightsService);
+
+        assertEquals(BOOKING_FLIGHTS_RESPONSE, actualResponse.getBody());
+        assertEquals(HttpStatus.CREATED, actualResponse.getStatusCode());
+    }
 }

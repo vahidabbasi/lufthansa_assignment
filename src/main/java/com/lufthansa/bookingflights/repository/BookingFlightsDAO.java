@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface BookingFlightsDAO {
-
     @SqlUpdate("INSERT INTO BOOKING_INFO(BOOKING_ID, ROUTE_ID, STATUS) VALUES(?, ?, ?)")
     void bookFlight(String bookingId, int routeId, String status);
 
@@ -28,4 +27,7 @@ public interface BookingFlightsDAO {
 
     @SqlUpdate("UPDATE BOOKING_INFO SET ROUTE_ID= :routeId WHERE BOOKING_ID= :bookId")
     void updateFlightRoute(String bookId, int routeId);
+
+    @SqlQuery("SELECT COUNT(*) FROM BOOKING_INFO WHERE BOOKING_ID = :bookingId")
+    int isBookingIdExist(String bookingId);
 }

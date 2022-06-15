@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
  * Exception thrown when validation failed or other cases
  */
 public class BookingFlightsException extends RuntimeException {
-    private String displayMessage;
-    private HttpStatus httpStatus;
+    private final String displayMessage;
+    private final HttpStatus httpStatus;
 
     public BookingFlightsException(String message) {
         super(message);

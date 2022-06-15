@@ -1,6 +1,7 @@
 package com.lufthansa.bookingflights.handlers;
 
 import com.lufthansa.bookingflights.exceptions.BookingFlightsException;
+import com.lufthansa.bookingflights.exceptions.BookingIdGenerationException;
 import com.lufthansa.bookingflights.model.response.ErrorResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BookingFlightsExceptionHandlerTest {
 
-    private BookingFlightsExceptionHandler exceptionHandler = new BookingFlightsExceptionHandler();
+    private final BookingFlightsExceptionHandler exceptionHandler = new BookingFlightsExceptionHandler();
 
     @Mock
     private MethodArgumentNotValidException methodArgumentNotValidException;
@@ -42,6 +43,7 @@ public class BookingFlightsExceptionHandlerTest {
 
     @Test
     public void shouldHandleBookingFlightsException() {
+
         BookingFlightsException bookingFlightsException = new BookingFlightsException(ERROR_MESSAGE);
 
         ResponseEntity responseEntity = exceptionHandler.handleBookingFlightsException(bookingFlightsException);
@@ -51,7 +53,19 @@ public class BookingFlightsExceptionHandlerTest {
     }
 
     @Test
+    public void shouldHandleBookingIdGenerationException() {
+
+        BookingIdGenerationException bookingFlightsException = new BookingIdGenerationException(ERROR_MESSAGE);
+
+        ResponseEntity responseEntity = exceptionHandler.handleBookingIdGenerationException(bookingFlightsException);
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
+        assertEquals(ErrorResponse.builder().message(ERROR_MESSAGE).build(), responseEntity.getBody());
+    }
+
+    @Test
     public void shouldHandleHttpMessageNotReadableException() {
+
         HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(ERROR_MESSAGE);
 
         ResponseEntity responseEntity = exceptionHandler.handleHttpMessageNotReadableException(httpMessageNotReadableException);
@@ -62,12 +76,14 @@ public class BookingFlightsExceptionHandlerTest {
 
     @Test
     public void shouldHandleMethodArgumentNotValidException() {
+
         when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldError()).thenReturn(fieldError);
         when(fieldError.getField()).thenReturn("field");
         when(fieldError.getDefaultMessage()).thenReturn("ArgumentNotValid");
 
         ResponseEntity responseEntity = exceptionHandler.handleMethodArgumentNotValidException(methodArgumentNotValidException);
+
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(ErrorResponse.builder().message("field: ArgumentNotValid").build(), responseEntity.getBody());
     }

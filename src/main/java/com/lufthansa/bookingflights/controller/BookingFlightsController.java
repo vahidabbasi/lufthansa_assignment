@@ -114,4 +114,23 @@ public class BookingFlightsController {
                 .build());
     }
 
+    @PostMapping(value ="/bookings", produces = "application/json")
+    @ApiOperation(value = "book a flight")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_CREATED, message = "Flight has been booked.", response =
+                    BookingFlightsResponse.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "The request is missing or have badly formatted"),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAVAILABLE, message = "Server error", response = ErrorResponse.class)
+    })
+    public ResponseEntity<BookingFlightsResponse> bookFlight(@RequestBody @Valid BookingFlightsRequest bookingFlightsRequest) {
+        BookingFlightInfo bookingFlightInfo = bookingFlightsService.bookFlight(bookingFlightsRequest.getOrigin(),
+                bookingFlightsRequest.getDestination(), bookingFlightsRequest.getFlightDate(),
+                bookingFlightsRequest.getNumOfTransits(), bookingFlightsRequest.getMinPrice(),
+                bookingFlightsRequest.getMaxPrice());
+
+        BookingFlightsResponse bookingFlightsResponse = getBookingFlightsResponse(bookingFlightsRequest, bookingFlightInfo);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookingFlightsResponse);
+    }
+
 }

@@ -20,12 +20,14 @@ public class BookingFlightsRequest {
 
 	@NotNull
 	@ApiModelProperty(required = true)
-	@Length(min = 3, max = 3)
+	@Size(min = 3, message="must be at least {min} characters")
+	@Size(max = 3, message="must be less than {max} characters")
 	private String origin;
 
 	@NotNull
 	@ApiModelProperty(required = true)
-	@Size(min = 3, max = 3)
+	@Size(min = 3, message="must be at least {min} characters")
+	@Size(max = 3, message="must be less than {max} characters")
 	private String destination;
 
 	@NotNull

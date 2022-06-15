@@ -7,7 +7,7 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <changeSet author="vahid abbasi" id="6">
         <createTable tableName="booking_info">
-            <column name="booking_id" type="BIGINT">
+            <column name="booking_id" type="VARCHAR(255)">
                 <constraints primaryKey="true"/>
             </column>
             <column name="route_id" type="INT">
